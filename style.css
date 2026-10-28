@@ -381,3 +381,74 @@ body.pw-private-on
 [data-testid^="chatlist-message-"] [data-testid="chat-list-timestamp"] {
   filter: none !important;
 }
+
+
+/* Fix 5: Calls — reveal ALL text and avatar on row hover */
+
+/* Keep sensitive call content blurred by default */
+body.pw-private-on
+[data-testid^="chatlist-message-"] [data-testid="cell-frame-title"],
+body.pw-private-on
+[data-testid^="chatlist-message-"] [data-testid="cell-frame-primary-detail"],
+body.pw-private-on
+[data-testid^="chatlist-message-"] [data-testid="cell-frame-secondary"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Remove blur from every descendant when the call row is hovered */
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover,
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover * {
+  --pw-hover-reveal: 1;
+}
+
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-primary-detail"],
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-title"] *,
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-primary-detail"] *,
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"] *,
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover img {
+  filter: none !important;
+}
+
+/* Fix 6: Own contact — reveal name and (vous) on hover */
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-title"] *,
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"]:hover [data-testid="you-label"],
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"] *,
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"]:hover img {
+  filter: none !important;
+}
+
+/* Also support the row if WhatsApp renders it outside #pane-side */
+body.pw-private-on
+[data-testid="message-yourself-row"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on
+[data-testid="message-yourself-row"]:hover [data-testid="cell-frame-title"] *,
+body.pw-private-on
+[data-testid="message-yourself-row"]:hover [data-testid="you-label"],
+body.pw-private-on
+[data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on
+[data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"] *,
+body.pw-private-on
+[data-testid="message-yourself-row"]:hover img {
+  filter: none !important;
+}
