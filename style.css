@@ -1,233 +1,28 @@
 
-/* Private WhatsApp v3 — safer visual privacy */
+/* ==========================================
+   PRIVATE WHATSAPP v3
+   Privacy blur + hover reveal
+   ========================================== */
 
-/* Conversation list */
+/* ==========================================
+   1. CONVERSATION LIST
+   ========================================== */
+
+/* Keep rows themselves clear */
 body.pw-private-on #pane-side [data-testid="cell-frame-container"],
 body.pw-private-on #pane-side [role="listitem"],
-body.pw-private-on #pane-side [role="row"],
-/* body.pw-private-on #pane-side [data-testid="list-item"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-} */
-
-/* Reveal conversation on hover */
-body.pw-private-on #pane-side [data-testid="cell-frame-container"]:hover,
-body.pw-private-on #pane-side [role="listitem"]:hover,
-body.pw-private-on #pane-side [role="row"]:hover,
-body.pw-private-on #pane-side [data-testid="list-item"]:hover {
+body.pw-private-on #pane-side [role="row"] {
   filter: none !important;
 }
 
-/* Messages and chat content */
-body.pw-private-on [data-testid="msg-container"],
-body.pw-private-on [data-testid="conversation-info-header"],
-body.pw-private-on [data-testid="image-thumb"],
-body.pw-private-on [data-testid="media-url-provider"],
-body.pw-private-on [data-testid="quoted-message"],
-body.pw-private-on [data-testid="link-preview"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Reveal chat content on hover */
-body.pw-private-on [data-testid="msg-container"]:hover,
-body.pw-private-on [data-testid="conversation-info-header"]:hover,
-body.pw-private-on [data-testid="image-thumb"]:hover,
-body.pw-private-on [data-testid="media-url-provider"]:hover,
-body.pw-private-on [data-testid="quoted-message"]:hover,
-body.pw-private-on [data-testid="link-preview"]:hover {
-  filter: none !important;
-}
-
-/* Hide conversation sidebar */
-body.pw-hide-sidebar #pane-side {
-  display: none !important;
-}
-
-
-/* Private WhatsApp — Status list privacy */
-
-/* Blur status contact rows, not the "Statut" heading */
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="status-row-cell"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Blur status previews and contact details */
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="status-thumbnail"],
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="cell-frame-title"],
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="cell-frame-secondary"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Reveal only the hovered contact row */
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="status-row-cell"]:hover,
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="status-row-cell"]:hover [data-testid="status-thumbnail"],
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="status-row-cell"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid="status-drawer"]
-[data-testid="status-list-drawer"]
-[data-testid="status-row-cell"]:hover [data-testid="cell-frame-secondary"] {
-  filter: none !important;
-}
-
-
-
-/* Private WhatsApp — Channels list and suggestions */
-
-/* Blur channel rows and suggested channels */
-body.pw-private-on [data-testid*="channel"] [role="listitem"],
-body.pw-private-on [data-testid*="channel"] [role="row"],
-body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"],
-body.pw-private-on [data-testid*="channel"] [data-testid="list-item"],
-body.pw-private-on [data-testid*="suggested"] [role="listitem"],
-body.pw-private-on [data-testid*="suggested"] [role="row"],
-body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-container"],
-body.pw-private-on [data-testid*="recommend"] [role="listitem"],
-body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-container"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Reveal a channel row when hovering anywhere over that row */
-body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover,
-body.pw-private-on [data-testid*="channel"] [role="row"]:hover,
-body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover,
-body.pw-private-on [data-testid*="channel"] [data-testid="list-item"]:hover,
-body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover,
-body.pw-private-on [data-testid*="suggested"] [role="row"]:hover,
-body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-container"]:hover,
-body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover,
-body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-container"]:hover {
-  filter: none !important;
-}
-
-/* Blur channel details and previews */
-body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-secondary"],
-body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-secondary"],
-body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-secondary"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Reveal child details when their own channel row is hovered */
-body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover [data-testid="cell-frame-secondary"],
-body.pw-private-on [data-testid*="channel"] [role="row"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="channel"] [role="row"]:hover [data-testid="cell-frame-secondary"],
-body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover [data-testid="cell-frame-secondary"],
-body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover [data-testid="cell-frame-secondary"],
-body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-testid="cell-frame-secondary"] {
-  filter: none !important;
-}
-
-
-
-/* Fix 1: Blur the contact profile photo in the active conversation */
-body.pw-private-on
-[aria-label="Informations du profil"][role="button"] img,
-body.pw-private-on
-[title="Informations du profil"][role="button"] img {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Reveal the profile photo on hover */
-body.pw-private-on
-[aria-label="Informations du profil"][role="button"]:hover img,
-body.pw-private-on
-[title="Informations du profil"][role="button"]:hover img {
-  filter: none !important;
-}
-
-
-
-/* Contact privacy: blur sensitive content, not the row itself */
-
-body.pw-private-on #pane-side
-[data-testid="cell-frame-container"] {
-  filter: none !important;
-}
-
-/* Blur profile image or default avatar (initial letter) */
-body.pw-private-on #pane-side
-[data-testid="cell-frame-container"] > div:first-child
-:is(img, [style*="--x-height"], [role="img"]) {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Blur contact name, including the "(vous)" label */
-body.pw-private-on #pane-side
-[data-testid="cell-frame-title"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Blur last message preview */
-body.pw-private-on #pane-side
-[data-testid="cell-frame-secondary"] > div:first-child {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Hover anywhere on the contact row reveals all private content */
-body.pw-private-on #pane-side
-[data-testid="cell-frame-container"]:hover
-[data-testid="cell-frame-title"],
-body.pw-private-on #pane-side
-[data-testid="cell-frame-container"]:hover
-[data-testid="cell-frame-secondary"] > div:first-child,
-body.pw-private-on #pane-side
-[data-testid="cell-frame-container"]:hover
-> div:first-child :is(img, [style*="--x-height"], [role="img"]) {
-  filter: none !important;
-}
-
-/* Keep timestamps and row borders visible */
-body.pw-private-on #pane-side
-[data-testid="chat-list-timestamp"] {
-  filter: none !important;
-}
-
-
-
-/* Fix 1 — Contacts: blur only sensitive content, reveal full row on hover */
-
-/* Never blur the entire contact row */
-body.pw-private-on #pane-side [data-testid="cell-frame-container"] {
-  filter: none !important;
-  transition: none !important;
-}
-
-/* Blur profile photos */
+/* Blur contact photos */
 body.pw-private-on #pane-side
 [data-testid="cell-frame-container"] img {
   filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Blur default avatars and initial-letter avatars */
+/* Blur default avatars */
 body.pw-private-on #pane-side
 [data-testid="cell-frame-container"]
 :is([role="img"], [data-testid*="avatar"], [style*="--x-height"]) {
@@ -235,21 +30,21 @@ body.pw-private-on #pane-side
   transition: filter 120ms ease !important;
 }
 
-/* Blur the entire title, including the "vous" label */
+/* Blur contact names */
 body.pw-private-on #pane-side
 [data-testid="cell-frame-title"] {
   filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Blur preview text, not the timestamp */
+/* Blur message previews only */
 body.pw-private-on #pane-side
 [data-testid="cell-frame-secondary"] > div:first-child {
   filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Hover anywhere on the contact row reveals all its private content */
+/* Reveal contact photo, name and preview on hover */
 body.pw-private-on #pane-side
 [data-testid="cell-frame-container"]:hover img,
 body.pw-private-on #pane-side
@@ -270,174 +65,172 @@ body.pw-private-on #pane-side
 }
 
 
-/* Fix 2 — Calls: use the actual call-list row structure */
+/* ==========================================
+   2. MESSAGES AND CHAT CONTENT
+   ========================================== */
 
-/* Keep the call row itself unblurred */
-body.pw-private-on
-[data-testid^="chatlist-message-"] {
-  filter: none !important;
-  transition: none !important;
-}
-
-/* Blur call profile photos and avatar fallbacks */
-body.pw-private-on
-[data-testid^="chatlist-message-"] img,
-body.pw-private-on
-[data-testid^="chatlist-message-"]
-:is([role="img"], [data-testid*="avatar"], [style*="--x-height"]) {
+body.pw-private-on [data-testid="msg-container"],
+body.pw-private-on [data-testid="conversation-info-header"],
+body.pw-private-on [data-testid="image-thumb"],
+body.pw-private-on [data-testid="media-url-provider"],
+body.pw-private-on [data-testid="quoted-message"],
+body.pw-private-on [data-testid="link-preview"] {
   filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Blur contact name */
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-title"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Blur call details, including missed/incoming/outgoing labels */
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-secondary"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Reveal all private call details when hovering anywhere on that row */
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover img,
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover
-:is([role="img"], [data-testid*="avatar"], [style*="--x-height"]),
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"] {
+body.pw-private-on [data-testid="msg-container"]:hover,
+body.pw-private-on [data-testid="conversation-info-header"]:hover,
+body.pw-private-on [data-testid="image-thumb"]:hover,
+body.pw-private-on [data-testid="media-url-provider"]:hover,
+body.pw-private-on [data-testid="quoted-message"]:hover,
+body.pw-private-on [data-testid="link-preview"]:hover {
   filter: none !important;
 }
 
 
-/* Fix 3: Blur own profile photo in the conversation list */
+/* ==========================================
+   3. HIDE SIDEBAR OPTION
+   ========================================== */
+
+body.pw-hide-sidebar #pane-side {
+  display: none !important;
+}
+
+
+/* ==========================================
+   4. STATUS LIST
+   ========================================== */
+
 body.pw-private-on
-#pane-side [data-testid="message-yourself-row"] img,
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"],
+body.pw-private-on
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-thumbnail"],
+body.pw-private-on
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="cell-frame-title"],
+body.pw-private-on
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="cell-frame-secondary"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+body.pw-private-on
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover,
+body.pw-private-on
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover
+[data-testid="status-thumbnail"],
+body.pw-private-on
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover
+[data-testid="cell-frame-title"],
+body.pw-private-on
+[data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover
+[data-testid="cell-frame-secondary"] {
+  filter: none !important;
+}
+
+
+/* ==========================================
+   5. CHANNELS AND SUGGESTIONS
+   ========================================== */
+
+body.pw-private-on [data-testid*="channel"] [role="listitem"],
+body.pw-private-on [data-testid*="channel"] [role="row"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"],
+body.pw-private-on [data-testid*="channel"] [data-testid="list-item"],
+body.pw-private-on [data-testid*="suggested"] [role="listitem"],
+body.pw-private-on [data-testid*="suggested"] [role="row"],
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-container"],
+body.pw-private-on [data-testid*="recommend"] [role="listitem"],
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-container"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover,
+body.pw-private-on [data-testid*="channel"] [role="row"]:hover,
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover,
+body.pw-private-on [data-testid*="channel"] [data-testid="list-item"]:hover,
+body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover,
+body.pw-private-on [data-testid*="suggested"] [role="row"]:hover,
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-container"]:hover,
+body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover,
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-container"]:hover {
+  filter: none !important;
+}
+
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-secondary"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="channel"] [role="row"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [role="row"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-testid="cell-frame-secondary"] {
+  filter: none !important;
+}
+
+
+/* ==========================================
+   6. ACTIVE CHAT PROFILE PHOTO
+   ========================================== */
+
+body.pw-private-on
+[aria-label="Informations du profil"][role="button"] img,
+body.pw-private-on
+[title="Informations du profil"][role="button"] img {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+body.pw-private-on
+[aria-label="Informations du profil"][role="button"]:hover img,
+body.pw-private-on
+[title="Informations du profil"][role="button"]:hover img {
+  filter: none !important;
+}
+
+
+/* ==========================================
+   7. OWN CONTACT (VOUS)
+   Keep this section separate from Calls
+   ========================================== */
+
 body.pw-private-on
 [data-testid="message-yourself-row"] img {
   filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Reveal the complete own-contact row on hover */
 body.pw-private-on
-#pane-side [data-testid="message-yourself-row"]:hover img,
-body.pw-private-on
-[data-testid="message-yourself-row"]:hover img {
-  filter: none !important;
-}
-
-/* Fix 4: Calls list — target the actual WhatsApp call row */
-body.pw-private-on
-[data-testid^="chatlist-message-"] {
-  /* Keep the row and its borders clear */
-  filter: none !important;
-}
-
-/* Blur call avatars */
-body.pw-private-on
-[data-testid^="chatlist-message-"] img,
-body.pw-private-on
-[data-testid^="chatlist-message-"] [role="img"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Blur call contact name and call details */
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-title"],
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-primary-detail"],
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-secondary"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Reveal avatar, name and call details when hovering anywhere
-   over the same call row */
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover img,
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [role="img"],
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-primary-detail"],
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"] {
-  filter: none !important;
-}
-
-/* Keep call-row timestamps readable */
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="chat-list-timestamp"] {
-  filter: none !important;
-}
-
-
-/* Fix 5: Calls — reveal ALL text and avatar on row hover */
-
-/* Keep sensitive call content blurred by default */
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-title"],
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-primary-detail"],
-body.pw-private-on
-[data-testid^="chatlist-message-"] [data-testid="cell-frame-secondary"] {
-  filter: blur(var(--pw-blur, 6px)) !important;
-  transition: filter 120ms ease !important;
-}
-
-/* Remove blur from every descendant when the call row is hovered */
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover,
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover * {
-  --pw-hover-reveal: 1;
-}
-
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-primary-detail"],
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"],
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-title"] *,
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-primary-detail"] *,
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"] *,
-body.pw-private-on
-[data-testid^="chatlist-message-"]:hover img {
-  filter: none !important;
-}
-
-/* Fix 6: Own contact — reveal name and (vous) on hover */
-body.pw-private-on
-#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-title"],
-body.pw-private-on
-#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-title"] *,
-body.pw-private-on
-#pane-side [data-testid="message-yourself-row"]:hover [data-testid="you-label"],
-body.pw-private-on
-#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"],
-body.pw-private-on
-#pane-side [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"] *,
-body.pw-private-on
-#pane-side [data-testid="message-yourself-row"]:hover img {
-  filter: none !important;
-}
-
-/* Also support the row if WhatsApp renders it outside #pane-side */
+[data-testid="message-yourself-row"]:hover img,
 body.pw-private-on
 [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-title"],
 body.pw-private-on
@@ -447,8 +240,97 @@ body.pw-private-on
 body.pw-private-on
 [data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"],
 body.pw-private-on
-[data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"] *,
+[data-testid="message-yourself-row"]:hover [data-testid="cell-frame-secondary"] * {
+  filter: none !important;
+}
+
+
+/* ==========================================
+   8. CALLS — OUTER ROW HOVER FIX
+   Actual structure:
+   list-item-N
+     -> chatlist-message-N
+        -> avatar, name, call details
+   ========================================== */
+
+/* Keep the outer call row clear */
 body.pw-private-on
-[data-testid="message-yourself-row"]:hover img {
+[role="row"][data-testid^="list-item-"] {
+  filter: none !important;
+}
+
+/* Blur the call avatar */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]
+[data-testid^="chatlist-message-"] img {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Blur contact name */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]
+[data-testid="cell-frame-title"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Blur primary details */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]
+[data-testid="cell-frame-primary-detail"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Blur call status/details */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]
+[data-testid="cell-frame-secondary"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Reveal avatar when hovering anywhere over the OUTER row */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]:hover
+[data-testid^="chatlist-message-"] img {
+  filter: none !important;
+}
+
+/* Reveal contact name when hovering anywhere over the OUTER row */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]:hover
+[data-testid="cell-frame-title"],
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]:hover
+[data-testid="cell-frame-title"] * {
+  filter: none !important;
+}
+
+/* Reveal primary details */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]:hover
+[data-testid="cell-frame-primary-detail"],
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]:hover
+[data-testid="cell-frame-primary-detail"] * {
+  filter: none !important;
+}
+
+/* Reveal call status/details */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]:hover
+[data-testid="cell-frame-secondary"],
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]:hover
+[data-testid="cell-frame-secondary"] * {
+  filter: none !important;
+}
+
+/* Keep call timestamps readable */
+body.pw-private-on
+[role="row"][data-testid^="list-item-"]
+[data-testid="chat-list-timestamp"] {
   filter: none !important;
 }
