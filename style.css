@@ -315,3 +315,69 @@ body.pw-private-on
 [data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"] {
   filter: none !important;
 }
+
+
+/* Fix 3: Blur own profile photo in the conversation list */
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"] img,
+body.pw-private-on
+[data-testid="message-yourself-row"] img {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Reveal the complete own-contact row on hover */
+body.pw-private-on
+#pane-side [data-testid="message-yourself-row"]:hover img,
+body.pw-private-on
+[data-testid="message-yourself-row"]:hover img {
+  filter: none !important;
+}
+
+/* Fix 4: Calls list — target the actual WhatsApp call row */
+body.pw-private-on
+[data-testid^="chatlist-message-"] {
+  /* Keep the row and its borders clear */
+  filter: none !important;
+}
+
+/* Blur call avatars */
+body.pw-private-on
+[data-testid^="chatlist-message-"] img,
+body.pw-private-on
+[data-testid^="chatlist-message-"] [role="img"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Blur call contact name and call details */
+body.pw-private-on
+[data-testid^="chatlist-message-"] [data-testid="cell-frame-title"],
+body.pw-private-on
+[data-testid^="chatlist-message-"] [data-testid="cell-frame-primary-detail"],
+body.pw-private-on
+[data-testid^="chatlist-message-"] [data-testid="cell-frame-secondary"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Reveal avatar, name and call details when hovering anywhere
+   over the same call row */
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover img,
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [role="img"],
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-primary-detail"],
+body.pw-private-on
+[data-testid^="chatlist-message-"]:hover [data-testid="cell-frame-secondary"] {
+  filter: none !important;
+}
+
+/* Keep call-row timestamps readable */
+body.pw-private-on
+[data-testid^="chatlist-message-"] [data-testid="chat-list-timestamp"] {
+  filter: none !important;
+}
