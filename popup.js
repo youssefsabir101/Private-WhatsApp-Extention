@@ -10,7 +10,8 @@ async function getSettings() {
     pinSalt: "",
     autoLockMinutes: 0,
     blurStrength: 6,
-    hideSidebar: false
+    hideSidebar: false,
+    silentMode: false
   });
 }
 
@@ -41,7 +42,9 @@ async function render() {
 
   $("autoLock").value = String(s.autoLockMinutes);
   $("blurStrength").value = String(s.blurStrength);
+  $("blurValue").textContent = `${s.blurStrength}px`;
   $("hideSidebar").checked = s.hideSidebar;
+  $("silentMode").checked = s.silentMode;
 }
 
 $("blurToggle").addEventListener("click", async () => {
@@ -53,11 +56,7 @@ $("blurToggle").addEventListener("click", async () => {
 
 $("lockNow").addEventListener("click", async () => {
   const s = await getSettings();
-
-  if (!s.pinHash) {
-    say("Set a PIN first.");
-    return;
-  }
+  if (!s.pinHash) return say("Set a PIN first.");
 
   await chrome.storage.local.set({ locked: true });
   say("Lock requested.");
@@ -65,17 +64,12 @@ $("lockNow").addEventListener("click", async () => {
 
 $("panic").addEventListener("click", async () => {
   const s = await getSettings();
-
-  if (!s.pinHash) {
-    say("Set a PIN first to use Panic Button.");
-    return;
-  }
+  if (!s.pinHash) return say("Set a PIN first.");
 
   await chrome.storage.local.set({
     enabled: true,
     locked: true
   });
-
   say("Panic mode activated.");
 });
 
@@ -83,46 +77,31 @@ $("savePin").addEventListener("click", async () => {
   const pin = $("pin").value.trim();
 
   if (!/^\d{6,}$/.test(pin)) {
-    say("Use a PIN with at least 6 digits.");
-    return;
+    return say("Use a PIN with at least 6 digits.");
   }
 
   const s = await getSettings();
-
   if (s.pinHash) {
-    say("To change PIN, remove the old PIN first.");
-    return;
+    return say("Remove the existing PIN before setting a new one.");
   }
 
   const salt = makeSalt();
   const pinHash = await digestPin(pin, salt);
-
   await chrome.storage.local.set({ pinHash, pinSalt: salt });
+
   $("pin").value = "";
   say("PIN saved.");
 });
 
 $("removePin").addEventListener("click", async () => {
   const s = await getSettings();
-
-  if (!s.pinHash) {
-    say("No PIN is currently set.");
-    return;
-  }
+  if (!s.pinHash) return say("No PIN is set.");
 
   const pin = $("pin").value.trim();
+  if (!pin) return say("Enter your current PIN first.");
 
-  if (!pin) {
-    say("Enter your current PIN in the PIN field first.");
-    return;
-  }
-
-  const enteredHash = await digestPin(pin, s.pinSalt);
-
-  if (enteredHash !== s.pinHash) {
-    say("Incorrect PIN.");
-    return;
-  }
+  const hash = await digestPin(pin, s.pinSalt);
+  if (hash !== s.pinHash) return say("Incorrect PIN.");
 
   await chrome.storage.local.set({
     pinHash: "",
@@ -141,11 +120,10 @@ $("autoLock").addEventListener("change", async () => {
   say("Auto-lock setting saved.");
 });
 
-$("blurStrength").addEventListener("change", async () => {
-  await chrome.storage.local.set({
-    blurStrength: Number($("blurStrength").value)
-  });
-  say("Blur strength updated.");
+$("blurStrength").addEventListener("input", async () => {
+  const value = Number($("blurStrength").value);
+  $("blurValue").textContent = `${value}px`;
+  await chrome.storage.local.set({ blurStrength: value });
 });
 
 $("hideSidebar").addEventListener("change", async () => {
@@ -153,6 +131,13 @@ $("hideSidebar").addEventListener("change", async () => {
     hideSidebar: $("hideSidebar").checked
   });
   say("Sidebar setting updated.");
+});
+
+$("silentMode").addEventListener("change", async () => {
+  await chrome.storage.local.set({
+    silentMode: $("silentMode").checked
+  });
+  say("Silent Mode setting updated.");
 });
 
 render();

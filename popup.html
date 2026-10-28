@@ -6,31 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Private WhatsApp</title>
   <style>
+    * { box-sizing: border-box; }
     body {
-      width: 290px;
+      width: 310px;
       margin: 0;
-      padding: 16px;
+      padding: 17px;
       background: #111b21;
       color: #e9edef;
       font: 14px Arial, sans-serif;
     }
-    h2 { margin: 0 0 8px; font-size: 20px; }
-    h3 { margin: 14px 0 6px; font-size: 14px; }
+    h2 { margin: 0 0 6px; font-size: 20px; }
+    h3 { margin: 14px 0 7px; font-size: 14px; }
     p { color: #aebac1; line-height: 1.45; }
-    label { display: block; margin-top: 10px; color: #d6dfe3; }
-    input, select, button {
-      box-sizing: border-box;
+    label { display: block; margin-top: 10px; }
+    input:not([type="checkbox"]):not([type="range"]),
+    select, button {
       width: 100%;
       padding: 10px;
-      margin-top: 6px;
+      margin-top: 7px;
       border-radius: 8px;
       font-size: 14px;
     }
-    input, select {
+    input:not([type="checkbox"]):not([type="range"]),
+    select {
       background: #202c33;
       color: white;
       border: 1px solid #52616b;
     }
+    input[type="range"] { width: 100%; accent-color: #00a884; }
+    input[type="checkbox"] { accent-color: #00a884; }
     button {
       border: 0;
       background: #00a884;
@@ -39,41 +43,49 @@
       cursor: pointer;
     }
     button.secondary { background: #35454f; }
-    button.danger { background: #c94b4b; }
+    button.danger { background: #bd4545; }
     hr { border: 0; border-top: 1px solid #35454f; margin: 14px 0; }
-    #status { min-height: 18px; margin-bottom: 0; }
-    small { color: #8696a0; }
+    .range-line { display:flex; justify-content:space-between; gap:8px; }
+    .check-label { display:flex; align-items:center; gap:8px; }
+    #status { min-height:18px; margin-bottom:0; }
+    small { color:#8696a0; line-height:1.5; }
   </style>
 </head>
 <body>
   <h2>🔒 Private WhatsApp</h2>
-  <p>Privacy controls · Local settings</p>
+  <p>Privacy controls for WhatsApp Web.</p>
 
   <button id="blurToggle" class="secondary">Loading...</button>
   <button id="lockNow">🔐 Lock WhatsApp</button>
   <button id="panic" class="danger">🚨 Panic Button</button>
 
   <hr>
-  <h3>🎚️ Blur strength</h3>
-  <label for="blurStrength">Choose blur level</label>
-  <select id="blurStrength">
-    <option value="4">Light — 4px</option>
-    <option value="6">Normal — 6px</option>
-    <option value="8">Strong — 8px</option>
-    <option value="12">Maximum — 12px</option>
-  </select>
+  <h3>🎚️ Custom Blur</h3>
+  <div class="range-line">
+    <label for="blurStrength">Blur intensity</label>
+    <strong id="blurValue">6px</strong>
+  </div>
+  <input id="blurStrength" type="range" min="1" max="12" step="1" value="6">
+  <small>1px = subtle · 12px = strong</small>
 
-  <label>
-    <input id="hideSidebar" type="checkbox" style="width:auto">
+  <hr>
+  <h3>🧩 Display options</h3>
+  <label class="check-label">
+    <input id="hideSidebar" type="checkbox">
     Hide conversation sidebar
   </label>
+  <label class="check-label">
+    <input id="silentMode" type="checkbox">
+    Silent Mode (hide in-page alerts)
+  </label>
+  <small>Silent Mode hides supported WhatsApp Web notification banners. It does not mute Chrome or operating-system notifications.</small>
 
   <hr>
   <h3>🔑 PIN Lock</h3>
-  <label for="pin">New PIN (at least 6 digits)</label>
+  <label for="pin">PIN (at least 6 digits)</label>
   <input id="pin" type="password" inputmode="numeric"
     autocomplete="new-password" placeholder="Enter PIN">
-  <button id="savePin">Set / Change PIN</button>
+  <button id="savePin">Set PIN</button>
   <button id="removePin" class="secondary">Remove PIN</button>
 
   <hr>
@@ -87,7 +99,7 @@
   </select>
 
   <p id="status" role="status"></p>
-  <small>Local extension · No analytics</small>
+  <small>Local settings · No analytics in this extension code</small>
   <script src="popup.js"></script>
 </body>
 </html>

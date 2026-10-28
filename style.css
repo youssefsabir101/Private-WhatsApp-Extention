@@ -1,45 +1,60 @@
 
-/* Private WhatsApp v2 — visual privacy */
+/* Private WhatsApp v3 — visual privacy */
 
+/* Conversation list, chats and groups */
 body.pw-private-on #pane-side [role="listitem"],
 body.pw-private-on #pane-side [role="row"],
 body.pw-private-on #pane-side [data-testid="cell-frame-container"],
 body.pw-private-on #pane-side [data-testid="list-item"],
+body.pw-private-on [data-testid="cell-frame-container"],
 body.pw-private-on [data-testid="msg-container"],
 body.pw-private-on [data-testid="conversation-info-header"],
+body.pw-private-on [data-testid="conversation-panel-messages"] [data-testid="image-thumb"],
 body.pw-private-on [data-testid="image-thumb"],
 body.pw-private-on [data-testid="media-url-provider"],
 body.pw-private-on [data-testid="quoted-message"],
-body.pw-private-on [data-testid="link-preview"] {
+body.pw-private-on [data-testid="link-preview"],
+body.pw-private-on [data-testid*="status"],
+body.pw-private-on [data-testid*="story"],
+body.pw-private-on [data-testid*="channel"],
+body.pw-private-on [data-testid*="call"] {
   filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Reveal hovered items */
+/* Reveal hovered content */
 body.pw-private-on #pane-side [role="listitem"]:hover,
 body.pw-private-on #pane-side [role="row"]:hover,
 body.pw-private-on #pane-side [data-testid="cell-frame-container"]:hover,
 body.pw-private-on #pane-side [data-testid="list-item"]:hover,
+body.pw-private-on [data-testid="cell-frame-container"]:hover,
 body.pw-private-on [data-testid="msg-container"]:hover,
 body.pw-private-on [data-testid="conversation-info-header"]:hover,
 body.pw-private-on [data-testid="image-thumb"]:hover,
 body.pw-private-on [data-testid="media-url-provider"]:hover,
 body.pw-private-on [data-testid="quoted-message"]:hover,
-body.pw-private-on [data-testid="link-preview"]:hover {
+body.pw-private-on [data-testid="link-preview"]:hover,
+body.pw-private-on [data-testid*="status"]:hover,
+body.pw-private-on [data-testid*="story"]:hover,
+body.pw-private-on [data-testid*="channel"]:hover,
+body.pw-private-on [data-testid*="call"]:hover {
   filter: none !important;
 }
 
-/* Hide the complete conversation sidebar */
+/* Hide sidebar */
 body.pw-hide-sidebar #pane-side {
   display: none !important;
 }
 
-/* Try to let the main chat use the available width */
-body.pw-hide-sidebar #app > div > div {
-  max-width: 100% !important;
+/* Silent Mode: hide supported in-page notification banners only */
+body.pw-silent-mode [data-testid="notification"],
+body.pw-silent-mode [data-testid="toast"],
+body.pw-silent-mode [data-testid="alert"],
+body.pw-silent-mode [role="alert"] {
+  display: none !important;
 }
 
-/* Lock overlay is created by content.js */
+/* Lock overlay */
 #pw-lock-screen {
   position: fixed !important;
   inset: 0 !important;

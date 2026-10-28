@@ -12,6 +12,7 @@
   let autoLockMinutes = 0;
   let blurStrength = 6;
   let hideSidebar = false;
+  let silentMode = false;
   let idleTimer;
 
   async function digestPin(pin, salt) {
@@ -27,7 +28,9 @@
 
     document.body.classList.toggle("pw-private-on", enabled);
     document.body.classList.toggle("pw-hide-sidebar", hideSidebar);
+    document.body.classList.toggle("pw-silent-mode", silentMode);
     document.body.style.setProperty("--pw-blur", `${blurStrength}px`);
+
     applyLock();
   }
 
@@ -66,16 +69,16 @@
 
     async function unlock() {
       if (!pinHash || !pinSalt) {
-        error.textContent = "No PIN configured. Reload the page.";
+        error.textContent = "PIN is not configured.";
         return;
       }
 
       button.disabled = true;
 
       try {
-        const enteredHash = await digestPin(input.value, pinSalt);
+        const hash = await digestPin(input.value, pinSalt);
 
-        if (enteredHash === pinHash) {
+        if (hash === pinHash) {
           locked = false;
           await chrome.storage.local.set({ locked: false });
           removeLockScreen();
@@ -114,7 +117,8 @@
       pinSalt: "",
       autoLockMinutes: 0,
       blurStrength: 6,
-      hideSidebar: false
+      hideSidebar: false,
+      silentMode: false
     });
 
     enabled = s.enabled;
@@ -122,9 +126,9 @@
     pinHash = s.pinHash;
     pinSalt = s.pinSalt;
     autoLockMinutes = s.autoLockMinutes;
-    blurStrength = [4, 6, 8, 12].includes(s.blurStrength)
-      ? s.blurStrength : 6;
+    blurStrength = Math.min(12, Math.max(1, Number(s.blurStrength) || 6));
     hideSidebar = s.hideSidebar;
+    silentMode = s.silentMode;
 
     applySettings();
     resetIdleTimer();
@@ -143,11 +147,7 @@
   }
 
   async function panicLock() {
-    const s = await chrome.storage.local.get({
-      pinHash: "",
-      enabled: true
-    });
-
+    const s = await chrome.storage.local.get({ pinHash: "" });
     if (!s.pinHash) return;
 
     await chrome.storage.local.set({
@@ -182,7 +182,6 @@
       if (area === "local") reloadSettings();
     });
 
-    // Re-apply the overlay if WhatsApp updates its page.
     new MutationObserver(() => {
       if (locked && pinHash && !document.getElementById(LOCK_ID)) {
         showLockScreen();
