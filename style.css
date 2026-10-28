@@ -140,3 +140,22 @@ body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-test
 body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-testid="cell-frame-secondary"] {
   filter: none !important;
 }
+
+
+
+/* Fix 1: Blur the contact profile photo in the active conversation */
+body.pw-private-on
+[aria-label="Informations du profil"][role="button"] img,
+body.pw-private-on
+[title="Informations du profil"][role="button"] img {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Reveal the profile photo on hover */
+body.pw-private-on
+[aria-label="Informations du profil"][role="button"]:hover img,
+body.pw-private-on
+[title="Informations du profil"][role="button"]:hover img {
+  filter: none !important;
+}
