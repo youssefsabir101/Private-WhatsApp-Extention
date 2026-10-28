@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Private WhatsApp</title>
+  <style>
+    body {
+      width: 280px;
+      margin: 0;
+      padding: 18px;
+      background: #111b21;
+      color: #e9edef;
+      font: 14px Arial, sans-serif;
+    }
+    h2 { margin: 0 0 6px; }
+    p { color: #aebac1; line-height: 1.45; }
+    input, select, button {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 11px;
+      margin: 5px 0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    input, select {
+      background: #202c33;
+      color: white;
+      border: 1px solid #52616b;
+    }
+    button {
+      border: 0;
+      background: #00a884;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button.danger { background: #c94b4b; }
+    button.secondary { background: #35454f; }
+    hr { border: 0; border-top: 1px solid #35454f; margin: 15px 0; }
+    small { color: #8696a0; }
+    #status { min-height: 18px; }
+  </style>
+</head>
+<body>
+  <h2>🔒 Private WhatsApp</h2>
+  <p>Privacy controls for WhatsApp Web.</p>
+
+  <button id="blurToggle" class="secondary">Loading blur...</button>
+  <button id="lockNow">🔐 Lock WhatsApp</button>
+  <button id="panic" class="danger">🚨 Panic Button</button>
+
+  <hr>
+  <h3>PIN Lock</h3>
+  <input id="pin" type="password" inputmode="numeric"
+    autocomplete="new-password" placeholder="New PIN (6+ digits)">
+  <button id="savePin">Set / Change PIN</button>
+  <button id="removePin" class="secondary">Remove PIN</button>
+
+  <hr>
+  <h3>Auto-lock</h3>
+  <select id="autoLock">
+    <option value="0">Off</option>
+    <option value="1">After 1 minute</option>
+    <option value="5">After 5 minutes</option>
+    <option value="10">After 10 minutes</option>
+  </select>
+
+  <p id="status" role="status"></p>
+  <small>Local extension · No analytics</small>
+  <script src="popup.js"></script>
+</body>
+</html>

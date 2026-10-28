@@ -1,0 +1,19 @@
+/* Private WhatsApp — blur all conversation rows */
+
+body.pw-private-on #pane-side [role="listitem"],
+body.pw-private-on #pane-side [role="row"],
+body.pw-private-on #pane-side [data-testid="cell-frame-container"],
+body.pw-private-on #pane-side [data-testid="list-item"],
+body.pw-private-on #pane-side [tabindex="-1"] {
+  filter: blur(1px) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Reveal only the row under the mouse */
+body.pw-private-on #pane-side [role="listitem"]:hover,
+body.pw-private-on #pane-side [role="row"]:hover,
+body.pw-private-on #pane-side [data-testid="cell-frame-container"]:hover,
+body.pw-private-on #pane-side [data-testid="list-item"]:hover,
+body.pw-private-on #pane-side [tabindex="-1"]:hover {
+  filter: none !important;
+}
