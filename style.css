@@ -1,108 +1,142 @@
 
-/* Private WhatsApp v3 — visual privacy */
+/* Private WhatsApp v3 — safer visual privacy */
 
-/* Conversation list, chats and groups */
+/* Conversation list */
+body.pw-private-on #pane-side [data-testid="cell-frame-container"],
 body.pw-private-on #pane-side [role="listitem"],
 body.pw-private-on #pane-side [role="row"],
-body.pw-private-on #pane-side [data-testid="cell-frame-container"],
-body.pw-private-on #pane-side [data-testid="list-item"],
-body.pw-private-on [data-testid="cell-frame-container"],
-body.pw-private-on [data-testid="msg-container"],
-body.pw-private-on [data-testid="conversation-info-header"],
-body.pw-private-on [data-testid="conversation-panel-messages"] [data-testid="image-thumb"],
-body.pw-private-on [data-testid="image-thumb"],
-body.pw-private-on [data-testid="media-url-provider"],
-body.pw-private-on [data-testid="quoted-message"],
-body.pw-private-on [data-testid="link-preview"],
-body.pw-private-on [data-testid*="status"],
-body.pw-private-on [data-testid*="story"],
-body.pw-private-on [data-testid*="channel"],
-body.pw-private-on [data-testid*="call"] {
+body.pw-private-on #pane-side [data-testid="list-item"] {
   filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Reveal hovered content */
+/* Reveal conversation on hover */
+body.pw-private-on #pane-side [data-testid="cell-frame-container"]:hover,
 body.pw-private-on #pane-side [role="listitem"]:hover,
 body.pw-private-on #pane-side [role="row"]:hover,
-body.pw-private-on #pane-side [data-testid="cell-frame-container"]:hover,
-body.pw-private-on #pane-side [data-testid="list-item"]:hover,
-body.pw-private-on [data-testid="cell-frame-container"]:hover,
+body.pw-private-on #pane-side [data-testid="list-item"]:hover {
+  filter: none !important;
+}
+
+/* Messages and chat content */
+body.pw-private-on [data-testid="msg-container"],
+body.pw-private-on [data-testid="conversation-info-header"],
+body.pw-private-on [data-testid="image-thumb"],
+body.pw-private-on [data-testid="media-url-provider"],
+body.pw-private-on [data-testid="quoted-message"],
+body.pw-private-on [data-testid="link-preview"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
+}
+
+/* Reveal chat content on hover */
 body.pw-private-on [data-testid="msg-container"]:hover,
 body.pw-private-on [data-testid="conversation-info-header"]:hover,
 body.pw-private-on [data-testid="image-thumb"]:hover,
 body.pw-private-on [data-testid="media-url-provider"]:hover,
 body.pw-private-on [data-testid="quoted-message"]:hover,
-body.pw-private-on [data-testid="link-preview"]:hover,
-body.pw-private-on [data-testid*="status"]:hover,
-body.pw-private-on [data-testid*="story"]:hover,
-body.pw-private-on [data-testid*="channel"]:hover,
-body.pw-private-on [data-testid*="call"]:hover {
+body.pw-private-on [data-testid="link-preview"]:hover {
   filter: none !important;
 }
 
-/* Hide sidebar */
+/* Hide conversation sidebar */
 body.pw-hide-sidebar #pane-side {
   display: none !important;
 }
 
-/* Silent Mode: hide supported in-page notification banners only */
-body.pw-silent-mode [data-testid="notification"],
-body.pw-silent-mode [data-testid="toast"],
-body.pw-silent-mode [data-testid="alert"],
-body.pw-silent-mode [role="alert"] {
-  display: none !important;
+
+/* Private WhatsApp — Status list privacy */
+
+/* Blur status contact rows, not the "Statut" heading */
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
 }
 
-/* Lock overlay */
-#pw-lock-screen {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 2147483647 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  background: #101b22 !important;
-  color: #f1f5f6 !important;
-  font: 16px Arial, sans-serif !important;
+/* Blur status previews and contact details */
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-thumbnail"],
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="cell-frame-title"],
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="cell-frame-secondary"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
 }
 
-#pw-lock-screen * {
-  box-sizing: border-box !important;
+/* Reveal only the hovered contact row */
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover,
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover [data-testid="status-thumbnail"],
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid="status-drawer"]
+[data-testid="status-list-drawer"]
+[data-testid="status-row-cell"]:hover [data-testid="cell-frame-secondary"] {
+  filter: none !important;
 }
 
-#pw-lock-screen .pw-card {
-  width: min(340px, 90vw);
-  padding: 26px;
-  border-radius: 16px;
-  background: #1b2a32;
-  text-align: center;
-  box-shadow: 0 10px 40px #0008;
+
+
+/* Private WhatsApp — Channels list and suggestions */
+
+/* Blur channel rows and suggested channels */
+body.pw-private-on [data-testid*="channel"] [role="listitem"],
+body.pw-private-on [data-testid*="channel"] [role="row"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"],
+body.pw-private-on [data-testid*="channel"] [data-testid="list-item"],
+body.pw-private-on [data-testid*="suggested"] [role="listitem"],
+body.pw-private-on [data-testid*="suggested"] [role="row"],
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-container"],
+body.pw-private-on [data-testid*="recommend"] [role="listitem"],
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-container"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
 }
 
-#pw-lock-screen input,
-#pw-lock-screen button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 12px;
-  border-radius: 8px;
-  font-size: 15px;
+/* Reveal a channel row when hovering anywhere over that row */
+body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover,
+body.pw-private-on [data-testid*="channel"] [role="row"]:hover,
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover,
+body.pw-private-on [data-testid*="channel"] [data-testid="list-item"]:hover,
+body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover,
+body.pw-private-on [data-testid*="suggested"] [role="row"]:hover,
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-container"]:hover,
+body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover,
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-container"]:hover {
+  filter: none !important;
 }
 
-#pw-lock-screen input {
-  color: #fff;
-  background: #101b22;
-  border: 1px solid #52616b;
+/* Blur channel details and previews */
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="suggested"] [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="recommend"] [data-testid="cell-frame-secondary"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
+  transition: filter 120ms ease !important;
 }
 
-#pw-lock-screen button {
-  border: 0;
-  background: #00a884;
-  color: white;
-  cursor: pointer;
-}
-
-#pw-lock-screen .pw-error {
-  color: #ff9999;
-  min-height: 20px;
+/* Reveal child details when their own channel row is hovered */
+body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [role="listitem"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="channel"] [role="row"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [role="row"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="channel"] [data-testid="cell-frame-container"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="suggested"] [role="listitem"]:hover [data-testid="cell-frame-secondary"],
+body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-testid="cell-frame-title"],
+body.pw-private-on [data-testid*="recommend"] [role="listitem"]:hover [data-testid="cell-frame-secondary"] {
+  filter: none !important;
 }
