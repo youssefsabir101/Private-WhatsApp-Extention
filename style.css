@@ -1,19 +1,93 @@
-/* Private WhatsApp — blur all conversation rows */
+
+/* Private WhatsApp v2 — visual privacy */
 
 body.pw-private-on #pane-side [role="listitem"],
 body.pw-private-on #pane-side [role="row"],
 body.pw-private-on #pane-side [data-testid="cell-frame-container"],
 body.pw-private-on #pane-side [data-testid="list-item"],
-body.pw-private-on #pane-side [tabindex="-1"] {
-  filter: blur(1px) !important;
+body.pw-private-on [data-testid="msg-container"],
+body.pw-private-on [data-testid="conversation-info-header"],
+body.pw-private-on [data-testid="image-thumb"],
+body.pw-private-on [data-testid="media-url-provider"],
+body.pw-private-on [data-testid="quoted-message"],
+body.pw-private-on [data-testid="link-preview"] {
+  filter: blur(var(--pw-blur, 6px)) !important;
   transition: filter 120ms ease !important;
 }
 
-/* Reveal only the row under the mouse */
+/* Reveal hovered items */
 body.pw-private-on #pane-side [role="listitem"]:hover,
 body.pw-private-on #pane-side [role="row"]:hover,
 body.pw-private-on #pane-side [data-testid="cell-frame-container"]:hover,
 body.pw-private-on #pane-side [data-testid="list-item"]:hover,
-body.pw-private-on #pane-side [tabindex="-1"]:hover {
+body.pw-private-on [data-testid="msg-container"]:hover,
+body.pw-private-on [data-testid="conversation-info-header"]:hover,
+body.pw-private-on [data-testid="image-thumb"]:hover,
+body.pw-private-on [data-testid="media-url-provider"]:hover,
+body.pw-private-on [data-testid="quoted-message"]:hover,
+body.pw-private-on [data-testid="link-preview"]:hover {
   filter: none !important;
+}
+
+/* Hide the complete conversation sidebar */
+body.pw-hide-sidebar #pane-side {
+  display: none !important;
+}
+
+/* Try to let the main chat use the available width */
+body.pw-hide-sidebar #app > div > div {
+  max-width: 100% !important;
+}
+
+/* Lock overlay is created by content.js */
+#pw-lock-screen {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #101b22 !important;
+  color: #f1f5f6 !important;
+  font: 16px Arial, sans-serif !important;
+}
+
+#pw-lock-screen * {
+  box-sizing: border-box !important;
+}
+
+#pw-lock-screen .pw-card {
+  width: min(340px, 90vw);
+  padding: 26px;
+  border-radius: 16px;
+  background: #1b2a32;
+  text-align: center;
+  box-shadow: 0 10px 40px #0008;
+}
+
+#pw-lock-screen input,
+#pw-lock-screen button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+#pw-lock-screen input {
+  color: #fff;
+  background: #101b22;
+  border: 1px solid #52616b;
+}
+
+#pw-lock-screen button {
+  border: 0;
+  background: #00a884;
+  color: white;
+  cursor: pointer;
+}
+
+#pw-lock-screen .pw-error {
+  color: #ff9999;
+  min-height: 20px;
 }

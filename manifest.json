@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Private WhatsApp",
-  "version": "1.0.0",
-  "description": "Local blur for WhatsApp Web conversations and contacts.",
+  "version": "2.0.0",
+  "description": "Local visual privacy controls for WhatsApp Web.",
   "permissions": ["storage"],
   "host_permissions": ["https://web.whatsapp.com/*"],
   "content_scripts": [

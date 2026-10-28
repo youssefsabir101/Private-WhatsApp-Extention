@@ -1,8 +1,8 @@
+
 (() => {
   if (window.__privateWhatsAppInstalled) return;
   window.__privateWhatsAppInstalled = true;
 
-  const STYLE_ID = "private-whatsapp-runtime";
   const LOCK_ID = "pw-lock-screen";
 
   let enabled = true;
@@ -10,98 +10,9 @@
   let pinHash = "";
   let pinSalt = "";
   let autoLockMinutes = 0;
+  let blurStrength = 6;
+  let hideSidebar = false;
   let idleTimer;
-
-  const blurSelectors = [
-    '#pane-side [role="listitem"]',
-    '#pane-side [role="row"]',
-    '#pane-side [data-testid="cell-frame-container"]',
-    '#pane-side [data-testid="list-item"]',
-    '[data-testid="cell-frame-container"]',
-    '[data-testid="msg-container"]',
-    '[data-testid="conversation-info-header"]',
-    '[data-testid="image-thumb"]',
-    '[data-testid="media-url-provider"]',
-    '[data-testid="quoted-message"]',
-    '[data-testid="link-preview"]'
-  ];
-
-  function addStyle() {
-    let style = document.getElementById(STYLE_ID);
-    if (!style) {
-      style = document.createElement("style");
-      style.id = STYLE_ID;
-      document.documentElement.appendChild(style);
-    }
-
-    const blurRules = blurSelectors.map(selector => `
-      body.pw-private-on ${selector} {
-        filter: blur(6px) !important;
-        transition: filter 120ms ease !important;
-      }
-      body.pw-private-on ${selector}:hover {
-        filter: none !important;
-      }
-    `).join("\n");
-
-    style.textContent = `
-      ${blurRules}
-
-      #${LOCK_ID} {
-        position: fixed !important;
-        inset: 0 !important;
-        z-index: 2147483647 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: #101b22 !important;
-        color: #f1f5f6 !important;
-        font: 16px Arial, sans-serif !important;
-      }
-
-      #${LOCK_ID} * { box-sizing: border-box; }
-
-      #${LOCK_ID} .pw-card {
-        width: min(340px, 90vw);
-        padding: 26px;
-        border-radius: 16px;
-        background: #1b2a32;
-        text-align: center;
-        box-shadow: 0 10px 40px #0008;
-      }
-
-      #${LOCK_ID} input,
-      #${LOCK_ID} button {
-        width: 100%;
-        padding: 12px;
-        margin-top: 12px;
-        border-radius: 8px;
-        font-size: 15px;
-      }
-
-      #${LOCK_ID} input {
-        color: #fff;
-        background: #101b22;
-        border: 1px solid #52616b;
-      }
-
-      #${LOCK_ID} button {
-        border: 0;
-        background: #00a884;
-        color: white;
-        cursor: pointer;
-      }
-
-      #${LOCK_ID} .pw-error {
-        color: #ff9999;
-        min-height: 20px;
-      }
-    `;
-  }
-
-  function applyBlur() {
-    document.body?.classList.toggle("pw-private-on", enabled);
-  }
 
   async function digestPin(pin, salt) {
     const data = new TextEncoder().encode(salt + ":" + pin);
@@ -109,6 +20,15 @@
     return Array.from(new Uint8Array(hash))
       .map(b => b.toString(16).padStart(2, "0"))
       .join("");
+  }
+
+  function applySettings() {
+    if (!document.body) return;
+
+    document.body.classList.toggle("pw-private-on", enabled);
+    document.body.classList.toggle("pw-hide-sidebar", hideSidebar);
+    document.body.style.setProperty("--pw-blur", `${blurStrength}px`);
+    applyLock();
   }
 
   function removeLockScreen() {
@@ -145,20 +65,21 @@
     error.setAttribute("role", "status");
 
     async function unlock() {
-      const pin = input.value;
-      if (!pin || !pinHash || !pinSalt) {
-        error.textContent = "PIN is not configured.";
+      if (!pinHash || !pinSalt) {
+        error.textContent = "No PIN configured. Reload the page.";
         return;
       }
 
       button.disabled = true;
+
       try {
-        const enteredHash = await digestPin(pin, pinSalt);
+        const enteredHash = await digestPin(input.value, pinSalt);
 
         if (enteredHash === pinHash) {
           locked = false;
           await chrome.storage.local.set({ locked: false });
           removeLockScreen();
+          resetIdleTimer();
         } else {
           error.textContent = "Incorrect PIN. Try again.";
           input.value = "";
@@ -186,22 +107,26 @@
   }
 
   async function reloadSettings() {
-    const settings = await chrome.storage.local.get({
+    const s = await chrome.storage.local.get({
       enabled: true,
       locked: false,
       pinHash: "",
       pinSalt: "",
-      autoLockMinutes: 0
+      autoLockMinutes: 0,
+      blurStrength: 6,
+      hideSidebar: false
     });
 
-    enabled = settings.enabled;
-    locked = settings.locked;
-    pinHash = settings.pinHash;
-    pinSalt = settings.pinSalt;
-    autoLockMinutes = settings.autoLockMinutes;
+    enabled = s.enabled;
+    locked = s.locked;
+    pinHash = s.pinHash;
+    pinSalt = s.pinSalt;
+    autoLockMinutes = s.autoLockMinutes;
+    blurStrength = [4, 6, 8, 12].includes(s.blurStrength)
+      ? s.blurStrength : 6;
+    hideSidebar = s.hideSidebar;
 
-    applyBlur();
-    applyLock();
+    applySettings();
     resetIdleTimer();
   }
 
@@ -217,29 +142,54 @@
     }, autoLockMinutes * 60 * 1000);
   }
 
+  async function panicLock() {
+    const s = await chrome.storage.local.get({
+      pinHash: "",
+      enabled: true
+    });
+
+    if (!s.pinHash) return;
+
+    await chrome.storage.local.set({
+      enabled: true,
+      locked: true
+    });
+  }
+
+  function onKeyDown(event) {
+    if (
+      event.altKey &&
+      event.shiftKey &&
+      event.code === "KeyP" &&
+      !event.repeat
+    ) {
+      event.preventDefault();
+      event.stopPropagation();
+      panicLock();
+    }
+  }
+
   function start() {
-    addStyle();
-
-    ["mousemove", "keydown", "click", "scroll", "touchstart"]
-      .forEach(eventName => {
-        document.addEventListener(eventName, resetIdleTimer, {
-          passive: true
-        });
-      });
-
     reloadSettings();
 
-    new MutationObserver(() => {
-      addStyle();
-      applyBlur();
-      applyLock();
-    }).observe(document.body, {
-      childList: true,
-      subtree: true
+    ["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(type => {
+      document.addEventListener(type, resetIdleTimer, { passive: true });
     });
+
+    document.addEventListener("keydown", onKeyDown, true);
 
     chrome.storage.onChanged.addListener((changes, area) => {
       if (area === "local") reloadSettings();
+    });
+
+    // Re-apply the overlay if WhatsApp updates its page.
+    new MutationObserver(() => {
+      if (locked && pinHash && !document.getElementById(LOCK_ID)) {
+        showLockScreen();
+      }
+    }).observe(document.body, {
+      childList: true,
+      subtree: true
     });
   }
 

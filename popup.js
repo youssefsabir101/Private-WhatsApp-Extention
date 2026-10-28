@@ -1,3 +1,4 @@
+
 const $ = id => document.getElementById(id);
 const status = $("status");
 
@@ -7,7 +8,9 @@ async function getSettings() {
     locked: false,
     pinHash: "",
     pinSalt: "",
-    autoLockMinutes: 0
+    autoLockMinutes: 0,
+    blurStrength: 6,
+    hideSidebar: false
   });
 }
 
@@ -19,22 +22,33 @@ async function digestPin(pin, salt) {
   const data = new TextEncoder().encode(salt + ":" + pin);
   const hash = await crypto.subtle.digest("SHA-256", data);
   return Array.from(new Uint8Array(hash))
-    .map(byte => byte.toString(16).padStart(2, "0"))
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+function makeSalt() {
+  return Array.from(crypto.getRandomValues(new Uint8Array(16)))
+    .map(b => b.toString(16).padStart(2, "0"))
     .join("");
 }
 
 async function render() {
   const s = await getSettings();
+
   $("blurToggle").textContent = s.enabled
     ? "Blur: ON — click to turn OFF"
     : "Blur: OFF — click to turn ON";
+
   $("autoLock").value = String(s.autoLockMinutes);
+  $("blurStrength").value = String(s.blurStrength);
+  $("hideSidebar").checked = s.hideSidebar;
 }
 
 $("blurToggle").addEventListener("click", async () => {
   const s = await getSettings();
   await chrome.storage.local.set({ enabled: !s.enabled });
   await render();
+  say("Blur setting updated.");
 });
 
 $("lockNow").addEventListener("click", async () => {
@@ -46,7 +60,7 @@ $("lockNow").addEventListener("click", async () => {
   }
 
   await chrome.storage.local.set({ locked: true });
-  say("WhatsApp locked.");
+  say("Lock requested.");
 });
 
 $("panic").addEventListener("click", async () => {
@@ -61,6 +75,7 @@ $("panic").addEventListener("click", async () => {
     enabled: true,
     locked: true
   });
+
   say("Panic mode activated.");
 });
 
@@ -72,21 +87,20 @@ $("savePin").addEventListener("click", async () => {
     return;
   }
 
-  const salt = Array.from(
-    crypto.getRandomValues(new Uint8Array(16))
-  ).map(b => b.toString(16).padStart(2, "0")).join("");
+  const s = await getSettings();
 
+  if (s.pinHash) {
+    say("To change PIN, remove the old PIN first.");
+    return;
+  }
+
+  const salt = makeSalt();
   const pinHash = await digestPin(pin, salt);
 
-  await chrome.storage.local.set({
-    pinHash,
-    pinSalt: salt
-  });
-
+  await chrome.storage.local.set({ pinHash, pinSalt: salt });
   $("pin").value = "";
-  say("PIN saved. Keep your computer locked when away.");
+  say("PIN saved.");
 });
-
 
 $("removePin").addEventListener("click", async () => {
   const s = await getSettings();
@@ -120,12 +134,25 @@ $("removePin").addEventListener("click", async () => {
   say("PIN removed.");
 });
 
-
 $("autoLock").addEventListener("change", async () => {
   await chrome.storage.local.set({
     autoLockMinutes: Number($("autoLock").value)
   });
   say("Auto-lock setting saved.");
+});
+
+$("blurStrength").addEventListener("change", async () => {
+  await chrome.storage.local.set({
+    blurStrength: Number($("blurStrength").value)
+  });
+  say("Blur strength updated.");
+});
+
+$("hideSidebar").addEventListener("change", async () => {
+  await chrome.storage.local.set({
+    hideSidebar: $("hideSidebar").checked
+  });
+  say("Sidebar setting updated.");
 });
 
 render();
