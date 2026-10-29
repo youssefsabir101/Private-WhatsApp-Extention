@@ -1,144 +1,131 @@
-
 # Private WhatsApp
 
-**A local-first Chrome extension for visual privacy on WhatsApp Web.**
+**Take control of your visual privacy on WhatsApp Web.**
 
-Private WhatsApp adds configurable visual privacy controls to WhatsApp Web, including adjustable blur, a PIN-based screen overlay, a panic shortcut, sidebar hiding, and an optional in-page notification banner filter.
+Private WhatsApp is a Chrome extension designed to help you protect sensitive information on your screen while using WhatsApp Web. With customizable visual privacy controls, you can reduce the visibility of private conversations, keep your workspace discreet, and access essential privacy settings directly from the extension.
 
-> **Status:** Personal project / experimental  
-> **Platform:** Google Chrome · WhatsApp Web  
-> **Manifest:** Chrome Extension Manifest V3
+Simple, lightweight, and designed with privacy in mind.
 
-## Features
+---
 
-- **Adjustable blur:** Choose a blur intensity from 1px to 12px.
-- **Hover to reveal:** Reveal supported blurred items by moving the pointer over them.
-- **Conversation privacy:** Blur supported chat-list entries, messages, media previews, and conversation headers.
-- **Groups, Status, Channels and Calls:** Includes experimental selectors for additional WhatsApp Web sections. Coverage depends on the current WhatsApp interface.
-- **Hide sidebar:** Hide the conversation list when you want to focus on the open chat.
-- **PIN screen overlay:** Cover the WhatsApp Web page and require a PIN to reveal it again.
-- **Panic shortcut:** Press `Alt + Shift + P` to activate the lock overlay.
-- **Auto-lock:** Optionally lock after a period of inactivity.
-- **Silent Mode:** Hide supported in-page notification banners.
-- **Local settings:** Preferences are stored with Chrome's local extension storage.
+## ✨ Features
 
-## Installation
+- **Visual Privacy Mode** — Blur selected WhatsApp Web content to make sensitive information less visible to people around you.
+- **Hover to Reveal** — Temporarily reveal supported conversation details when you need to view them.
+- **Adjustable Blur Strength** — Customize the intensity of the visual blur.
+- **Sidebar Visibility Control** — Hide the conversation sidebar when you want a cleaner, more private screen.
+- **Privacy Lock** — Lock the interface using your configured PIN.
+- **Panic Lock Shortcut** — Quickly activate the lock using `Alt + Shift + P`.
+- **Automatic Lock** — Configure an inactivity period before the interface locks.
+- **Silent Mode** — Enable the available silent-mode privacy behavior.
+- **Quick Controls** — Access supported privacy actions from the extension interface.
+- **Persistent Settings** — Keep your preferences saved between sessions using Chrome's local extension storage.
 
-This project is intended for local installation. It does not need to be published on the Chrome Web Store.
+*Feature availability and behavior may vary with changes to the WhatsApp Web interface.*
 
-1. Download or clone this repository.
-2. Open `chrome://extensions/` in Chrome.
+## 🖥️ Screenshots
+
+Screenshots and demonstrations will be added here.
+
+<!-- Replace these placeholders with screenshots before publishing. -->
+<!--
+![Private WhatsApp — Main Interface](docs/screenshots/main-interface.png)
+![Private WhatsApp — Privacy Mode](docs/screenshots/privacy-mode.png)
+-->
+
+## 📦 Installation
+
+### Install from the Chrome Web Store
+
+The Chrome Web Store listing will be linked here once the extension is published.
+
+### Install manually for development
+
+1. Clone or download this repository.
+2. Open `chrome://extensions` in Google Chrome.
 3. Enable **Developer mode**.
 4. Select **Load unpacked**.
-5. Choose the folder containing `manifest.json`.
-6. Open [WhatsApp Web](https://web.whatsapp.com/).
-7. Refresh the page and configure the extension from its toolbar popup.
+5. Choose the extension directory containing `manifest.json`.
+6. Open [WhatsApp Web](https://web.whatsapp.com/) and configure the extension from its toolbar popup.
 
-## Configuration
+To install updates during development, reload the extension from `chrome://extensions`.
 
-### Blur intensity
+## 🚀 Getting Started
 
-Use the slider to select an intensity from 1px to 12px.
+1. Open WhatsApp Web.
+2. Click the Private WhatsApp icon in your Chrome toolbar.
+3. Enable visual privacy controls.
+4. Adjust the available blur and visibility settings to suit your needs.
+5. Configure a PIN before using the lock features.
+6. Choose the settings that best fit your environment.
 
-### PIN lock
+**Tip:** Test the extension with a non-sensitive conversation first to understand how the privacy effects behave.
 
-Set a PIN of at least six digits. Use **Lock WhatsApp** to cover the page.
+## 🔐 Privacy & Security
 
-### Panic shortcut
+Privacy is the core purpose of Private WhatsApp.
 
-Use:
+- The extension uses Chrome's local extension storage to retain its settings.
+- It requests the permissions declared in its manifest, including storage and access to WhatsApp Web.
+- A visual blur is a privacy aid, not encryption or a guarantee that information is hidden from every possible viewing method.
+- Anyone using your computer may still be able to access your WhatsApp account if your browser session is unlocked.
+- Keep your browser, operating system, and WhatsApp account secure.
 
-`Alt + Shift + P`
+Before publishing a release, review the extension's source code, permissions, PIN-handling implementation, and Chrome Web Store privacy disclosures.
 
-Keyboard shortcuts may vary with the operating system, browser, or page focus.
+## 🛠️ Built With
 
-### Auto-lock
+- JavaScript
+- HTML
+- CSS
+- Chrome Extensions API
+- Manifest V3
 
-Choose an inactivity period from the popup. The timer resets when supported user activity is detected.
+## 🗺️ Roadmap
 
-### Silent Mode
+Potential improvements for future releases:
 
-Silent Mode attempts to hide supported notification banners rendered inside WhatsApp Web.
+- [ ] Expand visual privacy controls as WhatsApp Web evolves.
+- [ ] Improve accessibility and keyboard navigation.
+- [ ] Refine the quick-controls interface.
+- [ ] Add more customization options.
+- [ ] Publish stable releases through the Chrome Web Store.
+- [ ] Expand documentation and troubleshooting guidance.
 
-It does **not** guarantee that Chrome notifications, operating-system notifications, incoming calls, or notification sounds are muted. Use your browser, operating-system, or WhatsApp notification settings for those controls.
+## ⚠️ Disclaimer
 
-## Project structure
+Private WhatsApp is an independent third-party browser extension. It is not affiliated with, endorsed by, or officially connected to WhatsApp or Meta Platforms, Inc.
 
-```text
-Private-WhatsApp/
-├── manifest.json
-├── content.js
-├── style.css
-├── popup.html
-├── popup.js
-├── README.md
-└── LICENSE
-```
+WhatsApp and its associated trademarks belong to their respective owners. This project modifies the visual presentation of WhatsApp Web and does not replace WhatsApp's own account-security features.
 
-## Privacy and security
+Compatibility may change when WhatsApp Web is updated.
 
-Private WhatsApp is designed to run locally. The extension code in this repository does not intentionally transmit chat content to an external server.
+## 🤝 Contributing
 
-- Extension preferences are stored using `chrome.storage.local`.
-- The extension does not require a remote backend.
-- Review the source code before installing or modifying the extension.
-- Keep the extension's permissions as limited as practical.
+Contributions, bug reports, and suggestions are welcome.
 
-### Important limitations
+If you find a problem:
 
-This is a **visual privacy tool**, not a security boundary.
+1. Check whether it can be reproduced in the latest version.
+2. Open an issue with clear reproduction steps.
+3. Include your browser version and relevant screenshots, while avoiding personal or sensitive information.
 
-- The blur effect does not prevent screenshots or screen recording.
-- The PIN overlay is not equivalent to locking your computer or encrypting WhatsApp data.
-- A SHA-256 hash of a short PIN is not strong protection against offline guessing.
-- Someone with access to the browser's developer tools or extension files may bypass the overlay.
-- WhatsApp Web changes frequently. Some selectors may stop matching or may need adjustment.
-- The extension does not guarantee complete coverage of every chat, group, status, channel, call screen, popup, or notification.
+Please do not publish PINs, private conversations, session information, or other sensitive data in issues or pull requests.
 
-For stronger protection, lock your operating system whenever you leave your computer unattended.
+## 📄 License
 
-## Troubleshooting
+A license has not yet been specified for this project.
 
-**The blur does not cover an element**
+Before making the repository public, add a `LICENSE` file that reflects how you want others to use, modify, and distribute your code. Making a repository public does not, by itself, grant permission to reuse its code.
 
-WhatsApp may have changed its interface. Inspect the element using Chrome DevTools and update the relevant selectors in `style.css`.
+## 👨‍💻 Author
 
-**Changes do not appear**
+**Youssef Sabir**
 
-Open `chrome://extensions/`, click **Reload** on Private WhatsApp, then refresh WhatsApp Web.
+GitHub: [@youssefsabir101](https://github.com/youssefsabir101)
 
-**Silent Mode does not mute sound**
+Developed with a focus on practical privacy, simplicity, and a better WhatsApp Web experience.
 
-Silent Mode targets supported in-page banners only. Adjust notification and sound settings in WhatsApp, Chrome, or your operating system.
+---
 
-**The sidebar does not disappear**
-
-The sidebar selector may have changed. Check the current WhatsApp DOM before updating the CSS.
-
-## Development
-
-1. Edit the local source files.
-2. Reload the extension from `chrome://extensions/`.
-3. Refresh WhatsApp Web.
-4. Test each feature independently.
-5. Check the browser console for errors after WhatsApp updates.
-
-Do not test experimental selectors on sensitive conversations without understanding their effects.
-
-## Roadmap
-
-- More reliable selectors for Status, Channels, Groups and Calls.
-- Per-section blur controls.
-- More robust keyboard shortcut configuration.
-- Improved lock-screen hardening and security documentation.
-- Automated checks for extension files and manifest validity.
-
-## Contributing
-
-Bug reports, selector fixes, documentation improvements, and privacy-focused contributions are welcome.
-
-Before submitting a change, describe the WhatsApp Web interface tested and the Chrome version used.
-
-## License
-
-See [LICENSE](LICENSE) for the terms under which this project may be used and distributed.
+**Private WhatsApp — Your conversations. Your privacy. Your control.**
