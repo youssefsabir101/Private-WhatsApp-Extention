@@ -85,7 +85,21 @@
     const icon = document.createElement("div");
     icon.className = "pw-lock-icon";
     icon.setAttribute("aria-hidden", "true");
-    icon.textContent = "🔒";
+
+    const iconSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    iconSvg.setAttribute("viewBox", "0 0 24 24");
+    iconSvg.setAttribute("fill", "none");
+    iconSvg.setAttribute("focusable", "false");
+
+    const shieldPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    shieldPath.setAttribute("d", "M12 3.2 19 6v5.1c0 4.5-2.8 7.6-7 9.7-4.2-2.1-7-5.2-7-9.7V6l7-2.8Z");
+
+    const checkPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    checkPath.setAttribute("d", "m9 11.8 2 2 4-4");
+
+    iconSvg.append(shieldPath, checkPath);
+    icon.appendChild(iconSvg);
+
 
     const title = document.createElement("h2");
     title.id = "pw-lock-title";
@@ -108,6 +122,11 @@
     input.setAttribute("aria-label", "Enter your PIN");
     input.setAttribute("aria-describedby", "pw-lock-error");
     input.required = true;
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter" && (event.isComposing || event.keyCode === 229)) {
+        event.preventDefault();
+      }
+    });
 
     const button = document.createElement("button");
     button.className = "pw-lock-button";

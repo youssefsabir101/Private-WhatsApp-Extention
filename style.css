@@ -452,8 +452,15 @@ body.pw-private-on
   border-radius: 20px !important;
 
   background: rgba(0, 168, 132, 0.12) !important;
+}
 
-  font-size: 30px !important;
+#pw-lock-screen .pw-lock-icon svg {
+  width: 30px !important;
+  height: 30px !important;
+  stroke: #58d7a8 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  stroke-width: 1.6 !important;
 }
 
 #pw-lock-screen .pw-card h2 {
