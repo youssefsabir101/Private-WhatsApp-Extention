@@ -610,3 +610,227 @@ body.pw-silent-mode [role="alert"] {
 body.pw-silent-mode #pw-lock-screen {
   display: flex !important;
 }
+
+
+/* ==========================================
+   PRIVATE WHATSAPP — ONE-LINE DYNAMIC ISLAND
+   ========================================== */
+
+#pw-dynamic-island {
+  position: fixed !important;
+  top: 12px !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: translateX(-50%) !important;
+
+  z-index: 2147483646 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+
+  width: max-content !important;
+  max-width: calc(100vw - 20px) !important;
+  min-height: 46px !important;
+  padding: 0 12px !important;
+
+  border: 1px solid rgba(33, 212, 162, .3) !important;
+  border-radius: 999px !important;
+  background: #0b141a !important;
+  color: #e9edef !important;
+
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, .35),
+    0 0 16px rgba(0, 168, 132, .10) !important;
+
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 11px !important;
+  line-height: 1 !important;
+
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  touch-action: none !important;
+  white-space: nowrap !important;
+}
+
+#pw-dynamic-island,
+#pw-dynamic-island * {
+  box-sizing: border-box !important;
+}
+
+#pw-dynamic-island .pw-island-brand {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  flex: 0 0 auto !important;
+  cursor: grab !important;
+}
+
+#pw-dynamic-island .pw-island-logo {
+  display: block !important;
+  width: 23px !important;
+  height: 23px !important;
+  stroke: #21d4a2 !important;
+  stroke-width: 1.6 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+#pw-dynamic-island .pw-island-brand span {
+  color: #e9edef !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: .7px !important;
+}
+
+#pw-dynamic-island .pw-island-brand b {
+  color: #21d4a2 !important;
+}
+
+#pw-dynamic-island .pw-island-divider {
+  width: 1px !important;
+  height: 22px !important;
+  background: #34464e !important;
+  flex: 0 0 1px !important;
+}
+
+#pw-dynamic-island .pw-island-switch {
+  position: relative !important;
+  display: inline-block !important;
+  width: 36px !important;
+  height: 21px !important;
+  flex: 0 0 36px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+}
+
+#pw-dynamic-island .pw-island-switch input {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+}
+
+#pw-dynamic-island .pw-island-slider {
+  position: absolute !important;
+  inset: 0 !important;
+  border-radius: 999px !important;
+  background: #3a4a51 !important;
+  transition: background .18s ease !important;
+}
+
+#pw-dynamic-island .pw-island-slider::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 3px !important;
+  left: 3px !important;
+  width: 15px !important;
+  height: 15px !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .3) !important;
+  transition: transform .18s ease !important;
+}
+
+#pw-dynamic-island #pw-island-toggle:checked + .pw-island-slider {
+  background: #00a884 !important;
+}
+
+#pw-dynamic-island #pw-island-toggle:checked + .pw-island-slider::before {
+  transform: translateX(15px) !important;
+}
+
+#pw-dynamic-island #pw-island-toggle:focus-visible + .pw-island-slider {
+  outline: 2px solid #21d4a2 !important;
+  outline-offset: 3px !important;
+}
+
+#pw-dynamic-island .pw-island-action {
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 30px !important;
+  width: 30px !important;
+  height: 30px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border: 1px solid #34464e !important;
+  border-radius: 50% !important;
+  background: #17252c !important;
+  color: #dce5e9 !important;
+
+  cursor: pointer !important;
+  transition: background .15s ease, border-color .15s ease !important;
+}
+
+#pw-dynamic-island .pw-island-action:hover {
+  border-color: #00a884 !important;
+  background: #203b3d !important;
+}
+
+#pw-dynamic-island .pw-island-action svg {
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 1.7 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+#pw-dynamic-island .pw-island-panic {
+  border-color: rgba(255, 100, 100, .28) !important;
+  color: #ff8989 !important;
+}
+
+#pw-dynamic-island .pw-island-panic:hover {
+  border-color: #ff7777 !important;
+  background: rgba(180, 45, 45, .18) !important;
+}
+
+#pw-dynamic-island .pw-island-status {
+  display: none !important;
+}
+
+#pw-dynamic-island.pw-island-off .pw-island-slider {
+  background: #3a4a51 !important;
+}
+
+#pw-dynamic-island.pw-island-locked {
+  border-color: rgba(255, 180, 80, .55) !important;
+}
+
+#pw-dynamic-island.pw-island-dragging {
+  cursor: grabbing !important;
+  opacity: .94 !important;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, .4) !important;
+}
+
+#pw-dynamic-island.pw-island-dragging .pw-island-brand {
+  cursor: grabbing !important;
+}
+
+@media (max-width: 420px) {
+  #pw-dynamic-island {
+    gap: 7px !important;
+    padding: 0 9px !important;
+  }
+
+  #pw-dynamic-island .pw-island-brand span {
+    font-size: 9px !important;
+  }
+
+  #pw-dynamic-island .pw-island-action {
+    width: 27px !important;
+    height: 27px !important;
+    flex-basis: 27px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #pw-dynamic-island *,
+  #pw-dynamic-island *::before {
+    transition: none !important;
+  }
+}

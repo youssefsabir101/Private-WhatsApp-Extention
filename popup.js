@@ -311,4 +311,25 @@ pinInput.addEventListener("keydown", event => {
   }
 });
 
+if (nativeStorage) {
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== "local") return;
+
+    const settingsKeys = [
+      "enabled",
+      "locked",
+      "pinHash",
+      "pinSalt",
+      "autoLockMinutes",
+      "blurStrength",
+      "hideSidebar",
+      "silentMode"
+    ];
+
+    if (settingsKeys.some(key => key in changes)) {
+      void render();
+    }
+  });
+}
+
 void render();

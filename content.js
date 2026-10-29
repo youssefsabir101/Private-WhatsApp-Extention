@@ -66,6 +66,7 @@
     } else {
       removeLockScreen();
     }
+    updatePrivacyIsland();
   }
 
   function showLockScreen() {
@@ -227,6 +228,271 @@
       removeLockScreen();
     }
   }
+  
+  // ==========================================
+  // PRIVATE WHATSAPP — DYNAMIC ISLAND
+  // ==========================================
+
+  function createPrivacyIsland() {
+    if (!document.body || document.getElementById("pw-dynamic-island")) {
+      return;
+    }
+
+    const island = document.createElement("div");
+    island.id = "pw-dynamic-island";
+    island.setAttribute("aria-label", "Private WhatsApp quick controls");
+
+    island.innerHTML = `
+      <span class="pw-island-brand" title="Drag to move">
+        <svg class="pw-island-logo" viewBox="0 0 24 24"
+          fill="none" aria-hidden="true">
+          <path d="M12 3.2 19 6v5.1c0 4.5-2.8 7.6-7 9.7-4.2-2.1-7-5.2-7-9.7V6l7-2.8Z"/>
+          <path d="m9 11.8 2 2 4-4"/>
+        </svg>
+        <span>PRIVATE <b>WA</b></span>
+      </span>
+
+      <span class="pw-island-divider"></span>
+
+      <label class="pw-island-switch" title="Enable or disable Blur">
+        <input id="pw-island-toggle" type="checkbox"
+          role="switch" aria-label="Enable privacy blur">
+        <span class="pw-island-slider"></span>
+      </label>
+
+      <button class="pw-island-action" id="pw-island-lock"
+        type="button" title="Lock WhatsApp" aria-label="Lock WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="5" y="10" width="14" height="11" rx="2"/>
+          <path d="M8 10V7a4 4 0 1 1 8 0v3M12 14v3"/>
+        </svg>
+      </button>
+
+      <button class="pw-island-action pw-island-panic"
+        id="pw-island-panic" type="button"
+        title="Panic lock" aria-label="Activate panic lock">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3 20 7v5c0 4.2-3.1 7.2-8 9-4.9-1.8-8-4.8-8-9V7l8-4Z"/>
+          <path d="M12 8v4M12 16h.01"/>
+        </svg>
+      </button>
+
+      <span id="pw-island-status" class="pw-island-status"
+        role="status" aria-live="polite"></span>
+    `;
+
+    document.body.appendChild(island);
+
+    const toggle = island.querySelector("#pw-island-toggle");
+    const lockButton = island.querySelector("#pw-island-lock");
+    const panicButton = island.querySelector("#pw-island-panic");
+
+    // Restore the last position, if one was saved.
+    chrome.storage.local.get({ pwIslandPosition: null })
+      .then(({ pwIslandPosition }) => {
+        if (
+          pwIslandPosition &&
+          Number.isFinite(pwIslandPosition.x) &&
+          Number.isFinite(pwIslandPosition.y) &&
+          !island.classList.contains("pw-island-dragging")
+        ) {
+          setIslandPosition(pwIslandPosition.x, pwIslandPosition.y);
+        }
+      })
+      .catch(error => {
+        console.warn("[Private WhatsApp] Could not restore island position:", error);
+      });
+
+    function setIslandPosition(x, y) {
+      const maxX = Math.max(0, window.innerWidth - island.offsetWidth);
+      const maxY = Math.max(0, window.innerHeight - island.offsetHeight);
+
+      island.style.setProperty(
+        "left",
+        `${Math.max(0, Math.min(maxX, x))}px`,
+        "important"
+      );
+      island.style.setProperty(
+        "top",
+        `${Math.max(0, Math.min(maxY, y))}px`,
+        "important"
+      );
+      island.style.setProperty("right", "auto", "important");
+      island.style.setProperty("bottom", "auto", "important");
+      island.style.setProperty("transform", "none", "important");
+    }
+
+    // Drag from the island's empty space or brand.
+    // Interactive controls remain clickable.
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let originX = 0;
+    let originY = 0;
+
+    island.addEventListener("pointerdown", event => {
+      if (event.button !== 0) return;
+      if (event.target.closest("button, input, label")) return;
+
+      const rect = island.getBoundingClientRect();
+
+      dragging = true;
+      startX = event.clientX;
+      startY = event.clientY;
+      originX = rect.left;
+      originY = rect.top;
+
+      setIslandPosition(rect.left, rect.top);
+      island.classList.add("pw-island-dragging");
+
+      try {
+        island.setPointerCapture(event.pointerId);
+      } catch (_) {}
+
+      event.preventDefault();
+    });
+
+    island.addEventListener("pointermove", event => {
+      if (!dragging) return;
+
+      setIslandPosition(
+        originX + event.clientX - startX,
+        originY + event.clientY - startY
+      );
+    });
+
+    function stopDragging() {
+      if (!dragging) return;
+
+      dragging = false;
+      island.classList.remove("pw-island-dragging");
+
+      const rect = island.getBoundingClientRect();
+
+      chrome.storage.local.set({
+        pwIslandPosition: { x: rect.left, y: rect.top }
+      }).catch(error => {
+        console.warn("[Private WhatsApp] Could not save island position:", error);
+      });
+    }
+
+    island.addEventListener("pointerup", stopDragging);
+    island.addEventListener("pointercancel", stopDragging);
+    island.addEventListener("lostpointercapture", stopDragging);
+
+    window.addEventListener("resize", () => {
+      const rect = island.getBoundingClientRect();
+      setIslandPosition(rect.left, rect.top);
+    });
+
+    // Blur ON/OFF — shares the same setting as the popup.
+    toggle.addEventListener("change", async () => {
+      const previous = settings.enabled;
+      const next = toggle.checked;
+
+      toggle.disabled = true;
+      settings.enabled = next;
+      applySettings();
+
+      try {
+        await chrome.storage.local.set({ enabled: next });
+      } catch (error) {
+        settings.enabled = previous;
+        applySettings();
+        showIslandMessage("Could not update Blur");
+        console.error("[Private WhatsApp] Island toggle failed:", error);
+      } finally {
+        toggle.disabled = false;
+      }
+    });
+
+    // Lock now — same behaviour as the popup's Lock now button.
+    lockButton.addEventListener("click", async () => {
+      if (!settings.pinHash || !settings.pinSalt) {
+        showIslandMessage("Set a PIN in the popup first");
+        return;
+      }
+
+      try {
+        settings.locked = true;
+        applySettings();
+        resetIdleTimer();
+
+        await chrome.storage.local.set({ locked: true });
+      } catch (error) {
+        await reloadSettings();
+        showIslandMessage("Could not lock WhatsApp");
+        console.error("[Private WhatsApp] Island lock failed:", error);
+      }
+    });
+
+    // Panic — enables Blur and locks WhatsApp.
+    panicButton.addEventListener("click", async () => {
+      if (!settings.pinHash || !settings.pinSalt) {
+        showIslandMessage("Set a PIN in the popup first");
+        return;
+      }
+
+      const previousEnabled = settings.enabled;
+      const previousLocked = settings.locked;
+
+      settings.enabled = true;
+      settings.locked = true;
+      applySettings();
+      resetIdleTimer();
+
+      try {
+        await chrome.storage.local.set({
+          enabled: true,
+          locked: true
+        });
+      } catch (error) {
+        settings.enabled = previousEnabled;
+        settings.locked = previousLocked;
+        applySettings();
+        showIslandMessage("Panic lock failed");
+        console.error("[Private WhatsApp] Island panic failed:", error);
+      }
+    });
+
+    updatePrivacyIsland();
+  }
+
+  function showIslandMessage(message) {
+    const status = document.querySelector("#pw-island-status");
+    if (!status) return;
+
+    status.textContent = message;
+
+    setTimeout(() => {
+      updatePrivacyIsland();
+    }, 2200);
+  }
+
+  function updatePrivacyIsland() {
+    const island = document.getElementById("pw-dynamic-island");
+    if (!island) return;
+
+    const toggle = island.querySelector("#pw-island-toggle");
+    const status = island.querySelector("#pw-island-status");
+
+    toggle.checked = settings.enabled;
+    island.classList.toggle("pw-island-off", !settings.enabled);
+    island.classList.toggle("pw-island-locked", settings.locked);
+
+    toggle.setAttribute(
+      "aria-label",
+      settings.enabled ? "Disable privacy blur" : "Enable privacy blur"
+    );
+
+    if (status) {
+      status.textContent = settings.locked
+        ? "LOCKED"
+        : settings.enabled
+          ? "PROTECTED"
+          : "PAUSED";
+    }
+  }
 
   async function reloadSettings() {
     if (reloadInProgress) {
@@ -347,6 +613,7 @@
     if (started || !document.body) return;
     started = true;
 
+    createPrivacyIsland();
     void reloadSettings();
 
     [
