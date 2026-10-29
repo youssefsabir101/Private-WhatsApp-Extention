@@ -1,4 +1,6 @@
 
+"use strict";
+
 const $ = id => document.getElementById(id);
 const status = $("status");
 
@@ -16,12 +18,13 @@ async function getSettings() {
 }
 
 function say(message) {
-  status.textContent = message;
+  if (status) status.textContent = message;
 }
 
 async function digestPin(pin, salt) {
-  const data = new TextEncoder().encode(salt + ":" + pin);
+  const data = new TextEncoder().encode(`${salt}:${pin}`);
   const hash = await crypto.subtle.digest("SHA-256", data);
+
   return Array.from(new Uint8Array(hash))
     .map(b => b.toString(16).padStart(2, "0"))
     .join("");
@@ -33,75 +36,117 @@ function makeSalt() {
     .join("");
 }
 
-async function render() {
-  const s = await getSettings();
-
-  $("blurToggle").textContent = s.enabled
-    ? "Blur: ON — click to turn OFF"
-    : "Blur: OFF — click to turn ON";
-
-  $("autoLock").value = String(s.autoLockMinutes);
-  $("blurStrength").value = String(s.blurStrength);
-  $("blurValue").textContent = `${s.blurStrength}px`;
-  $("hideSidebar").checked = s.hideSidebar;
-  $("silentMode").checked = s.silentMode;
+async function runSafely(action, successMessage) {
+  try {
+    await action();
+    if (successMessage) say(successMessage);
+  } catch (error) {
+    console.error("[Private WhatsApp] Operation failed:", error);
+    say("Operation failed. Please try again.");
+  }
 }
 
-$("blurToggle").addEventListener("click", async () => {
+async function render() {
+  try {
+    const s = await getSettings();
+
+    $("blurToggle").textContent = s.enabled
+      ? "Blur: ON — click to turn OFF"
+      : "Blur: OFF — click to turn ON";
+
+    $("autoLock").value = String(s.autoLockMinutes);
+    $("blurStrength").value = String(s.blurStrength);
+    $("blurValue").textContent = `${s.blurStrength}px`;
+    $("hideSidebar").checked = s.hideSidebar;
+    $("silentMode").checked = s.silentMode;
+  } catch (error) {
+    console.error("[Private WhatsApp] Render failed:", error);
+    say("Unable to load settings.");
+  }
+}
+
+$("blurToggle").addEventListener("click", () => runSafely(async () => {
   const s = await getSettings();
   await chrome.storage.local.set({ enabled: !s.enabled });
   await render();
-  say("Blur setting updated.");
-});
+}, "Blur setting updated."));
 
-$("lockNow").addEventListener("click", async () => {
+$("lockNow").addEventListener("click", () => runSafely(async () => {
   const s = await getSettings();
-  if (!s.pinHash) return say("Set a PIN first.");
+
+  if (!s.pinHash || !s.pinSalt) {
+    say("Set a valid PIN first.");
+    return;
+  }
 
   await chrome.storage.local.set({ locked: true });
   say("Lock requested.");
-});
+}));
 
-$("panic").addEventListener("click", async () => {
+$("panic").addEventListener("click", () => runSafely(async () => {
   const s = await getSettings();
-  if (!s.pinHash) return say("Set a PIN first.");
+
+  if (!s.pinHash || !s.pinSalt) {
+    say("Set a valid PIN first.");
+    return;
+  }
 
   await chrome.storage.local.set({
     enabled: true,
     locked: true
   });
-  say("Panic mode activated.");
-});
 
-$("savePin").addEventListener("click", async () => {
+  say("Panic mode activated.");
+}));
+
+$("savePin").addEventListener("click", () => runSafely(async () => {
   const pin = $("pin").value.trim();
 
   if (!/^\d{6,}$/.test(pin)) {
-    return say("Use a PIN with at least 6 digits.");
+    say("Use a PIN with at least 6 digits.");
+    return;
   }
 
   const s = await getSettings();
-  if (s.pinHash) {
-    return say("Remove the existing PIN before setting a new one.");
+
+  if (s.pinHash || s.pinSalt) {
+    say("Remove the existing PIN before setting a new one.");
+    return;
   }
 
   const salt = makeSalt();
   const pinHash = await digestPin(pin, salt);
-  await chrome.storage.local.set({ pinHash, pinSalt: salt });
+
+  await chrome.storage.local.set({
+    pinHash,
+    pinSalt: salt
+  });
 
   $("pin").value = "";
   say("PIN saved.");
-});
+}));
 
-$("removePin").addEventListener("click", async () => {
+$("removePin").addEventListener("click", () => runSafely(async () => {
   const s = await getSettings();
-  if (!s.pinHash) return say("No PIN is set.");
+
+  if (!s.pinHash || !s.pinSalt) {
+    say("No valid PIN is set.");
+    return;
+  }
 
   const pin = $("pin").value.trim();
-  if (!pin) return say("Enter your current PIN first.");
+
+  if (!/^\d{6,}$/.test(pin)) {
+    say("Enter your current PIN.");
+    return;
+  }
 
   const hash = await digestPin(pin, s.pinSalt);
-  if (hash !== s.pinHash) return say("Incorrect PIN.");
+
+  if (hash !== s.pinHash) {
+    say("Incorrect PIN.");
+    return;
+  }
 
   await chrome.storage.local.set({
     pinHash: "",
@@ -111,33 +156,39 @@ $("removePin").addEventListener("click", async () => {
 
   $("pin").value = "";
   say("PIN removed.");
-});
+}));
 
-$("autoLock").addEventListener("change", async () => {
-  await chrome.storage.local.set({
-    autoLockMinutes: Number($("autoLock").value)
-  });
-  say("Auto-lock setting saved.");
-});
+$("autoLock").addEventListener("change", () => runSafely(async () => {
+  const value = Number($("autoLock").value);
 
-$("blurStrength").addEventListener("input", async () => {
+  if (![0, 1, 5, 10].includes(value)) {
+    say("Invalid auto-lock value.");
+    await render();
+    return;
+  }
+
+  await chrome.storage.local.set({ autoLockMinutes: value });
+}, "Auto-lock setting saved."));
+
+$("blurStrength").addEventListener("input", () => runSafely(async () => {
   const value = Number($("blurStrength").value);
+
+  if (!Number.isFinite(value) || value < 2 || value > 12) return;
+
   $("blurValue").textContent = `${value}px`;
   await chrome.storage.local.set({ blurStrength: value });
-});
+}));
 
-$("hideSidebar").addEventListener("change", async () => {
+$("hideSidebar").addEventListener("change", () => runSafely(async () => {
   await chrome.storage.local.set({
     hideSidebar: $("hideSidebar").checked
   });
-  say("Sidebar setting updated.");
-});
+}, "Sidebar setting updated."));
 
-$("silentMode").addEventListener("change", async () => {
+$("silentMode").addEventListener("change", () => runSafely(async () => {
   await chrome.storage.local.set({
     silentMode: $("silentMode").checked
   });
-  say("Silent Mode setting updated.");
-});
+}, "Silent Mode setting updated."));
 
-render();
+void render();

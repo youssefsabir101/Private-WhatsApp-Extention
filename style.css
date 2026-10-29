@@ -367,4 +367,239 @@ body.pw-private-on
   filter: none !important;
 }
 
+/* ==========================================
+   PRIVATE WHATSAPP — LOCK SCREEN
+   Premium dark / WhatsApp green
+   ========================================== */
 
+#pw-lock-screen.pw-lock-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+
+  margin: 0 !important;
+  padding: 24px !important;
+
+  overflow: auto !important;
+  box-sizing: border-box !important;
+
+  background:
+    radial-gradient(
+      ellipse at top,
+      rgba(0, 168, 132, 0.13),
+      transparent 55%
+    ),
+    rgba(8, 15, 19, 0.98) !important;
+
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+
+  z-index: 2147483647 !important;
+  isolation: isolate !important;
+
+  font-family: Arial, Helvetica, sans-serif !important;
+  color: #e9edef !important;
+}
+
+#pw-lock-screen .pw-card {
+  position: relative !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+
+  width: 100% !important;
+  max-width: 380px !important;
+  max-height: calc(100vh - 48px) !important;
+
+  overflow-y: auto !important;
+  box-sizing: border-box !important;
+
+  margin: 0 !important;
+  padding: 32px 26px !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 20px !important;
+
+  background: #111b21 !important;
+
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(0, 168, 132, 0.08) !important;
+
+  text-align: center !important;
+  color: #e9edef !important;
+}
+
+#pw-lock-screen .pw-lock-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 64px !important;
+  height: 64px !important;
+
+  margin: 0 auto 18px !important;
+  border: 1px solid rgba(0, 168, 132, 0.25) !important;
+  border-radius: 20px !important;
+
+  background: rgba(0, 168, 132, 0.12) !important;
+
+  font-size: 30px !important;
+}
+
+#pw-lock-screen .pw-card h2 {
+  margin: 0 0 10px !important;
+  padding: 0 !important;
+
+  color: #f4f7f8 !important;
+  font-size: 23px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+
+#pw-lock-screen .pw-lock-description {
+  margin: 0 0 24px !important;
+  padding: 0 !important;
+
+  color: #aebac1 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+#pw-lock-screen .pw-lock-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+#pw-lock-screen .pw-lock-input {
+  display: block !important;
+
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 48px !important;
+
+  margin: 0 !important;
+  padding: 0 14px !important;
+  box-sizing: border-box !important;
+
+  border: 1px solid #35454f !important;
+  border-radius: 10px !important;
+  outline: none !important;
+
+  background: #202c33 !important;
+  color: #e9edef !important;
+
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 16px !important;
+  text-align: center !important;
+  letter-spacing: 3px !important;
+
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease !important;
+}
+
+#pw-lock-screen .pw-lock-input::placeholder {
+  color: #8696a0 !important;
+  letter-spacing: normal !important;
+}
+
+#pw-lock-screen .pw-lock-input:focus {
+  border-color: #00a884 !important;
+  box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.15) !important;
+}
+
+#pw-lock-screen .pw-lock-button {
+  display: block !important;
+
+  width: 100% !important;
+  min-height: 48px !important;
+
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  box-sizing: border-box !important;
+
+  border: 0 !important;
+  border-radius: 10px !important;
+
+  background: #00a884 !important;
+  color: #ffffff !important;
+
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+
+  cursor: pointer !important;
+
+  transition:
+    background 160ms ease,
+    transform 160ms ease,
+    opacity 160ms ease !important;
+}
+
+#pw-lock-screen .pw-lock-button:hover:not(:disabled) {
+  background: #06cf9c !important;
+}
+
+#pw-lock-screen .pw-lock-button:active:not(:disabled) {
+  transform: scale(0.985) !important;
+}
+
+#pw-lock-screen .pw-lock-button:disabled {
+  cursor: wait !important;
+  opacity: 0.65 !important;
+}
+
+#pw-lock-screen .pw-error {
+  min-height: 18px !important;
+
+  margin: 14px 0 0 !important;
+  padding: 0 !important;
+
+  color: #ff7777 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 480px) {
+  #pw-lock-screen.pw-lock-overlay {
+    padding: 16px !important;
+  }
+
+  #pw-lock-screen .pw-card {
+    padding: 26px 20px !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* ==========================================
+   PRIVATE WHATSAPP — SILENT MODE
+   Hide supported in-page notification UI only.
+   Does not affect OS / Chrome notifications.
+   ========================================== */
+
+body.pw-silent-mode [data-testid="toast"],
+body.pw-silent-mode [data-testid="notification"],
+body.pw-silent-mode [data-testid="alert"],
+body.pw-silent-mode [role="alert"] {
+  display: none !important;
+}
+
+/* The lock must remain visible even in Silent Mode. */
+body.pw-silent-mode #pw-lock-screen {
+  display: flex !important;
+}
