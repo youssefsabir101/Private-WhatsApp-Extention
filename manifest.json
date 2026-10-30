@@ -1,3 +1,4 @@
+
 {
   "manifest_version": 3,
   "name": "Private WhatsApp – Visual Privacy",
@@ -6,13 +7,23 @@
   "icons": {
     "128": "icon.png"
   },
-  "permissions": ["storage"],
-  "host_permissions": ["https://web.whatsapp.com/*"],
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://web.whatsapp.com/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://web.whatsapp.com/*"],
-      "js": ["content.js"],
-      "css": ["style.css"],
+      "matches": [
+        "https://web.whatsapp.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "style.css"
+      ],
       "run_at": "document_idle"
     }
   ],
@@ -20,5 +31,15 @@
     "default_title": "Private WhatsApp",
     "default_popup": "popup.html",
     "default_icon": "icon.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "private-whatsapp-youssefsabir101@example.com",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
   }
 }
