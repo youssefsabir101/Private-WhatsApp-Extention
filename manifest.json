@@ -1,8 +1,8 @@
 {
-  "manifest_version": 3,
-  "name": "Private WhatsApp",
-  "version": "3.3.2",
-  "description": "On-device visual privacy controls for WhatsApp Web.",
+  "manifest_version": 3.5,
+  "name": "Private WhatsApp – Visual Privacy",
+  "version": "3.5",
+  "description": "Protect your WhatsApp Web privacy with smart blur, screen lock, and customizable visual controls.",
   "icons": {
     "128": "icon.png"
   },
