@@ -1,5 +1,7 @@
 # Private WhatsApp
 
+<img width="128" height="128" alt="Image" src="https://github.com/user-attachments/assets/496af396-bca0-4821-a75a-c89e76cfacc7" />
+
 **Take control of your visual privacy on WhatsApp Web.**
 
 Private WhatsApp is a Chrome extension designed to help you protect sensitive information on your screen while using WhatsApp Web. With customizable visual privacy controls, you can reduce the visibility of private conversations, keep your workspace discreet, and access essential privacy settings directly from the extension.
@@ -27,11 +29,11 @@ Simple, lightweight, and designed with privacy in mind.
 
 Screenshots and demonstrations will be added here.
 
-<!-- Replace these placeholders with screenshots before publishing. -->
-<!--
-![Private WhatsApp — Main Interface](docs/screenshots/main-interface.png)
-![Private WhatsApp — Privacy Mode](docs/screenshots/privacy-mode.png)
--->
+<img width="1586" height="992" alt="Image" src="https://github.com/user-attachments/assets/f693a901-c0da-4f84-9557-e175ef8c0109" />
+
+<img width="1910" height="985" alt="Image" src="https://github.com/user-attachments/assets/5edefb59-cc7d-4a28-886b-d4b3390378f5" />
+
+<img width="1911" height="940" alt="Image" src="https://github.com/user-attachments/assets/5c425597-4a41-45e5-b9bd-c477ec2dfae5" />
 
 ## 📦 Installation
 
